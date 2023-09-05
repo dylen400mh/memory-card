@@ -44,6 +44,13 @@ function CardDisplay({ pokemon, score, bestScore, setScore, setBestScore }) {
     console.log(selectedCard);
     if (selectedCard.selected) {
       setScore(0);
+
+      // reset selected cards
+      setCards(
+        cards.map((card) => {
+          return { ...card, selected: false };
+        })
+      );
     } else {
       setScore(score + 1);
 
