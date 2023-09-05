@@ -10,7 +10,14 @@ function App() {
         "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
       );
       const data = await response.json();
-      console.log(data);
+
+      const pokemon = [];
+      data.results.forEach(async (item) => {
+        const response = await fetch(item.url);
+        pokemon.push(await response.json());
+      });
+
+      console.log(pokemon);
     };
     fetchData();
   }, []);
