@@ -4,7 +4,7 @@ import Card from "./Card";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-function CardDisplay({ pokemon, score, bestScore, setScore }) {
+function CardDisplay({ pokemon, score, bestScore, setScore, setBestScore }) {
   const [cards, setCards] = useState([]);
 
   // choose 12 random cards on component mount
@@ -21,8 +21,8 @@ function CardDisplay({ pokemon, score, bestScore, setScore }) {
       // add index to takenIndices array
       takenIndices.push(randomIndex);
 
-      // Push pokemon object to cards array. Add selected attribute to track if card has been clicked.
-      cards.push({ ...pokemon[randomIndex], selected: false });
+      // Push pokemon object to cards array. Add unique id and selected attribute to track if card has been clicked.
+      cards.push({ ...pokemon[randomIndex], id: uuidv4(), selected: false });
     }
 
     setCards(cards);
@@ -37,19 +37,32 @@ function CardDisplay({ pokemon, score, bestScore, setScore }) {
   };
 
   const onClick = (e) => {
+    // Select card element
+    const selectedCard = e.target.closest(".card");
+
     // Already selected - reset score. If not, add one to score
-    if (e.target.id) {
+    console.log(selectedCard);
+    if (selectedCard.selected) {
       setScore(0);
     } else {
       setScore(score + 1);
 
-      // mark clicked card as selected
-      e.target.id = true;
+      // mark clicked card as selected if its not selected
+      setCards(
+        cards.map((card) => {
+          return {
+            ...card,
+            selected:
+              card.id === selectedCard.id ? !card.selected : card.selected,
+          };
+        })
+      );
 
       // update best score
-      if (score > bestScore) bestScore = score;
+      if (score >= bestScore) setBestScore(score + 1);
     }
 
+    console.log("shuffle");
     // shuffle cards
     shuffleCards();
   };
@@ -57,8 +70,7 @@ function CardDisplay({ pokemon, score, bestScore, setScore }) {
   return (
     <div className="cardDisplay">
       {cards.map((card) => {
-        const id = uuidv4();
-        return <Card key={id} id={id} card={card} onClick={onClick} />;
+        return <Card key={card.id} card={card} onClick={onClick} />;
       })}
     </div>
   );

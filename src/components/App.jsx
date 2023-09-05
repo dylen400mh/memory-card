@@ -6,9 +6,7 @@ import CardDisplay from "./CardDisplay";
 function App() {
   const [pokemon, setPokemon] = useState([]);
   const [score, setScore] = useState(0);
-
-  // best score is initally 0, but is updated when score changes
-  let bestScore = 0;
+  const [bestScore, setBestScore] = useState(0);
 
   // API data will be fetched only on mount.
   useEffect(() => {
@@ -46,6 +44,7 @@ function App() {
         score={score}
         bestScore={bestScore}
         setScore={setScore}
+        setBestScore={setBestScore}
       />
     </div>
   );
