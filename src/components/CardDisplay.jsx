@@ -2,11 +2,11 @@
 import "../styles/CardDisplay.css";
 import Card from "./Card";
 
-function CardDisplay({ pokemons }) {
+function CardDisplay({ cards }) {
   return (
     <div className="cardDisplay">
-      {pokemons.map((pokemon) => {
-        return <Card key={pokemon} pokemon={pokemon} />;
+      {cards.map((card) => {
+        return <Card key={card} card={card} />;
       })}
     </div>
   );

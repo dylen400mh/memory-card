@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
 import "../styles/Card.css";
 
-function Card({ pokemon }) {
+function Card({ card }) {
   return (
     <div className="card">
-      <img src={pokemon.sprite} alt="" />
-      <span>{pokemon.name}</span>
+      <img src={card.sprite} alt="" />
+      <span>{card.name}</span>
     </div>
   );
 }
