@@ -1,7 +1,9 @@
 import "./App.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [pokemon, setPokemon] = useState([]);
+
   // API data will be fetched only on mount.
   useEffect(() => {
     const fetchData = async () => {
@@ -11,13 +13,17 @@ function App() {
       );
       const data = await response.json();
 
-      const pokemon = [];
-      data.results.forEach(async (item) => {
+      const promises = data.results.map(async (item) => {
         const response = await fetch(item.url);
-        pokemon.push(await response.json());
+        const data = await response.json();
+
+        const name = data.name;
+        const sprite = data.sprites.front_default;
+
+        return { name: name, sprite: sprite };
       });
 
-      console.log(pokemon);
+      setPokemon(await Promise.all(promises));
     };
     fetchData();
   }, []);
