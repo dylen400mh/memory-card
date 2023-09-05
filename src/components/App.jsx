@@ -1,8 +1,14 @@
 import "../styles/App.css";
 import { useEffect, useState } from "react";
+import Header from "./Header";
+import CardDisplay from "./CardDisplay";
 
 function App() {
   const [pokemon, setPokemon] = useState([]);
+  const [score, setScore] = useState(0);
+
+  // best score is initally 0, but is updated when score changes
+  let bestScore = 0;
 
   // API data will be fetched only on mount.
   useEffect(() => {
@@ -21,7 +27,7 @@ function App() {
           const name = data.name;
           const sprite = data.sprites.front_default;
 
-          return { name: name, sprite: sprite };
+          return { name: name.toUpperCase(), sprite: sprite };
         });
 
         setPokemon(await Promise.all(promises));
@@ -31,6 +37,18 @@ function App() {
     };
     fetchData();
   }, []);
+
+  return (
+    <div className="app">
+      <Header score={score} bestScore={bestScore} />
+      <CardDisplay
+        pokemon={pokemon}
+        score={score}
+        bestScore={bestScore}
+        setScore={setScore}
+      />
+    </div>
+  );
 }
 
 export default App;
