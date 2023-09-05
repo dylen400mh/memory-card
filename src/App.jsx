@@ -8,22 +8,26 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       // Only get data for first 151 pokemon (GEN 1)
-      const response = await fetch(
-        "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
-      );
-      const data = await response.json();
-
-      const promises = data.results.map(async (item) => {
-        const response = await fetch(item.url);
+      try {
+        const response = await fetch(
+          "https://pokeapi.co/api/v2/pokemon?limit=151&offset=0"
+        );
         const data = await response.json();
 
-        const name = data.name;
-        const sprite = data.sprites.front_default;
+        const promises = data.results.map(async (item) => {
+          const response = await fetch(item.url);
+          const data = await response.json();
 
-        return { name: name, sprite: sprite };
-      });
+          const name = data.name;
+          const sprite = data.sprites.front_default;
 
-      setPokemon(await Promise.all(promises));
+          return { name: name, sprite: sprite };
+        });
+
+        setPokemon(await Promise.all(promises));
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchData();
   }, []);
