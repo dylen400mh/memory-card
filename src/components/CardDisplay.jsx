@@ -28,50 +28,62 @@ function CardDisplay({ pokemon, score, bestScore, setScore, setBestScore }) {
     setCards(cards);
   }, [pokemon]);
 
-  const shuffleCards = () => {
-    for (let i = 0; i < cards.length; i++) {
-      const randomIndex = Math.floor(Math.random() * cards.length);
+  // shuffle cards
+  const shuffle = (cards) => {
+    const shuffledCards = [];
+    const takenIndices = [];
 
-      [cards[i], cards[randomIndex]] = [cards[randomIndex], cards[i]];
+    for (let i = 0; i < cards.length; i++) {
+      let randomIndex = Math.floor(Math.random() * cards.length);
+
+      while (takenIndices.includes(randomIndex)) {
+        randomIndex = Math.floor(Math.random() * cards.length);
+      }
+
+      takenIndices.push(randomIndex);
+
+      shuffledCards.push(cards[randomIndex]);
     }
+
+    return shuffledCards;
   };
 
+  // click handler
   const onClick = (e) => {
     // Select card element
     const selectedCard = e.target.closest(".card");
 
     // Already selected - reset score. If not, add one to score
-    console.log(selectedCard);
     if (selectedCard.selected) {
       setScore(0);
 
-      // reset selected cards
+      // reset selected cards and shuffle
       setCards(
-        cards.map((card) => {
-          return { ...card, selected: false };
-        })
+        shuffle(
+          cards.map((card) => {
+            return { ...card, selected: false };
+          })
+        )
       );
     } else {
       setScore(score + 1);
 
-      // mark clicked card as selected if its not selected
+      // mark clicked card as selected and shuffle
       setCards(
-        cards.map((card) => {
-          return {
-            ...card,
-            selected:
-              card.id === selectedCard.id ? !card.selected : card.selected,
-          };
-        })
+        shuffle(
+          cards.map((card) => {
+            return {
+              ...card,
+              selected:
+                card.id === selectedCard.id ? !card.selected : card.selected,
+            };
+          })
+        )
       );
 
       // update best score
       if (score >= bestScore) setBestScore(score + 1);
     }
-
-    console.log("shuffle");
-    // shuffle cards
-    shuffleCards();
   };
 
   return (
