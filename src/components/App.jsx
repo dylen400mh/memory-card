@@ -7,6 +7,7 @@ function App() {
   const [pokemon, setPokemon] = useState([]);
   const [score, setScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
+  const [fetched, setFetched] = useState(false);
 
   // API data will be fetched only on mount.
   useEffect(() => {
@@ -29,6 +30,9 @@ function App() {
         });
 
         setPokemon(await Promise.all(promises));
+
+        // set as fetched
+        setFetched(true);
       } catch (error) {
         console.error(error);
       }
@@ -39,13 +43,17 @@ function App() {
   return (
     <div className="app">
       <Header score={score} bestScore={bestScore} />
-      <CardDisplay
-        pokemon={pokemon}
-        score={score}
-        bestScore={bestScore}
-        setScore={setScore}
-        setBestScore={setBestScore}
-      />
+      {fetched ? (
+        <CardDisplay
+          pokemon={pokemon}
+          score={score}
+          bestScore={bestScore}
+          setScore={setScore}
+          setBestScore={setBestScore}
+        />
+      ) : (
+        <h2>Loading...</h2>
+      )}
     </div>
   );
 }
