@@ -10,6 +10,11 @@ This is a dynamic React-based memory card game, leveraging state management and 
 - [Acknowledgments](#acknowledgments)
 
 ## Demo
+
+
+https://github.com/dylen400mh/memory-card/assets/97004369/9964a7f1-3385-4b0b-81a3-784acddd80fa
+
+
 [Click to Play!](https://dylen400mh-memory-card.netlify.app/)
 
 ## Features
